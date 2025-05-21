@@ -8,6 +8,8 @@ import { chat } from "@/actions/chat";
 import { readStreamableValue } from "ai/rsc";
 import { cn } from "@/lib/utils";
 import MarkdownRenderer from "./markdown-renderer";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const prompts = [
     {
@@ -127,20 +129,28 @@ const Chatbot = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-4">
                             <AnimatePresence>
                                 {prompts.map((prompt, index) => (
-                                    <motion.button
+                                    <motion.div
                                         key={index}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         whileTap={{ scale: 0.95 }}
-                                        transition={{ duration: 0.4, delay: index * 0.05, type: "spring", bounce: 0.25 }}
-                                        onClick={() => handlePromptClick(prompt.text)}
-                                        className="flex items-center gap-3 p-4 text-left border rounded-xl hover:bg-muted transition-all text-sm"
+                                        transition={{
+                                            duration: 0.4,
+                                            delay: index * 0.05,
+                                            type: "spring",
+                                            bounce: 0.25,
+                                        }}
                                     >
-                                        {prompt.icon}
-                                        <span>
-                                            {prompt.text}
-                                        </span>
-                                    </motion.button>
+                                        <Card
+                                            onClick={() => handlePromptClick(prompt.text)}
+                                            className="cursor-pointer hover:bg-muted transition-all"
+                                        >
+                                            <CardContent className="flex items-center gap-3 p-4 text-left text-sm">
+                                                {prompt.icon}
+                                                <span>{prompt.text}</span>
+                                            </CardContent>
+                                        </Card>
+                                    </motion.div>
                                 ))}
                             </AnimatePresence>
                         </div>
@@ -200,31 +210,24 @@ const Chatbot = () => {
                         transition={{ duration: 0.2 }}
                         className="relative border rounded-2xl lg:rounded-e-3xl p-2.5 flex items-end gap-2 bg-background"
                     >
-                        <div
-                            contentEditable
-                            role="textbox"
-                            onInput={(e) => {
-                                setInput(e.currentTarget.textContent || "");
-                            }}
+                        <Input
+                            placeholder="Message..."
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter" && !e.shiftKey) {
                                     e.preventDefault();
                                     handleSend();
                                 }
                             }}
-                            data-placeholder="Message..."
-                            className="flex-1 min-h-[36px] overflow-y-auto px-3 py-2 focus:outline-none text-sm bg-background rounded-md empty:before:text-muted-foreground empty:before:content-[attr(data-placeholder)] whitespace-pre-wrap break-words"
-                            ref={(element) => {
-                                inputRef.current = element;
-                                if (element && !input) {
-                                    element.textContent = "";
-                                }
-                            }}
+                            className="flex-1 min-h-[36px] px-3 py-2 text-sm bg-background rounded-md"
                         />
 
                         <Button
                             size="icon"
                             className="rounded-full shrink-0 mb-0.5"
+                            onClick={handleSend}
+                            disabled={isLoading}
                         >
                             <ArrowUpIcon strokeWidth={2.5} className="size-5" />
                         </Button>
