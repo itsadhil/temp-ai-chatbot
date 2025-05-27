@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"; // ShadCN Input component
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // ShadCN Card components
@@ -9,23 +10,31 @@ import { cn } from "@/lib/utils";
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const router = useRouter();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setIsLoading(true);
         setError("");
 
-        // Simulate login process
-        setTimeout(() => {
-            if (email === "admin" && password === "admin") {
-                alert("Logged in successfully as admin!");
-            } else {
-                setError("Invalid email or password. Try 'admin' as email and 'admin' as password.");
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message);
             }
-            setIsLoading(false);
-        }, 1000);
+
+            alert("Login successful!");
+            router.push("/chat-box");
+        } catch (error: any) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -77,11 +86,10 @@ const Login = () => {
                             type="submit"
                             className={cn(
                                 "w-full py-2 px-4 rounded-md text-white font-medium",
-                                isLoading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+                                "bg-blue-500 hover:bg-blue-600"
                             )}
-                            disabled={isLoading}
                         >
-                            {isLoading ? "Logging in..." : "Login"}
+                            Login
                         </Button>
                     </form>
                     <p className="mt-4 text-sm text-center text-gray-600">

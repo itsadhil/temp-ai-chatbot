@@ -18,6 +18,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.476.0",
+    "mongoose": "^8.15.1",
     "next": "15.1.7",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
