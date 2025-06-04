@@ -9,6 +9,7 @@ import { readStreamableValue } from "ai/rsc";
 import { cn } from "@/lib/utils";
 import MarkdownRenderer from "./markdown-renderer";
 import * as pdfjsLib from "pdfjs-dist";
+import { Card, CardContent } from "@/components/ui/card";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 
@@ -17,6 +18,12 @@ export type Message = {
     content: string;
     fileHeader?: { name: string }; // Optional file header for messages
 };
+
+const predefinedQuestions = [
+    "What is the status of my project?",
+    "Can you summarize this document?",
+    "What are the next steps?",
+];
 
 const Chatbot = () => {
     const messageEndRef = useRef<HTMLDivElement>(null);
@@ -196,25 +203,24 @@ const Chatbot = () => {
                                 How can I assist you today?
                             </h2>
                         </div>
-                        <div className="flex flex-col items-center space-y-2">
-                            <button
-                                onClick={() => setInput("What is the status of my project?")}
-                                className="text-blue-500 hover:underline"
-                            >
-                                What is the status of my project?
-                            </button>
-                            <button
-                                onClick={() => setInput("Can you summarize this document?")}
-                                className="text-blue-500 hover:underline"
-                            >
-                                Can you summarize this document?
-                            </button>
-                            <button
-                                onClick={() => setInput("What are the next steps?")}
-                                className="text-blue-500 hover:underline"
-                            >
-                                What are the next steps?
-                            </button>
+                        <div className="flex flex-wrap gap-4 justify-center">
+                            {predefinedQuestions.map((question, idx) => (
+                                <Card
+                                    key={idx}
+                                    className="cursor-pointer w-72 hover:shadow-lg transition"
+                                    onClick={() => {
+                                        setInput(question);
+                                        if (inputRef.current) {
+                                            inputRef.current.textContent = question;
+                                            inputRef.current.focus();
+                                        }
+                                    }}
+                                >
+                                    <CardContent className="p-4 text-center font-medium">
+                                        {question}
+                                    </CardContent>
+                                </Card>
+                            ))}
                         </div>
                     </div>
                 ) : (
