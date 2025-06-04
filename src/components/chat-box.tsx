@@ -60,6 +60,7 @@ const Chatbot = () => {
             // Extract text from the PDF
             const text = await extractTextFromPDF(file);
 
+<<<<<<< HEAD
             // 1. Chunk the text
             const chunks = chunkText(text, 500);
 
@@ -72,6 +73,8 @@ const Chatbot = () => {
             const data = await res.json();
             if (!data.success) throw new Error(data.error);
 
+=======
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
             setPdfTemp(text); // Store the extracted content in the PDF temp variable
             setUploadedFile({ name: file.name, status: "Uploaded" });
             setShowFileHeader(true); // Enable file header for the next user response
@@ -174,6 +177,7 @@ const Chatbot = () => {
         }
     };
 
+<<<<<<< HEAD
     function chunkText(text: string, chunkSize = 500): string[] {
         const chunks = [];
         let i = 0;
@@ -184,6 +188,8 @@ const Chatbot = () => {
         return chunks;
     }
 
+=======
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
     return (
         <div className="relative h-full flex flex-col items-center">
             {/* Message Container */}
@@ -297,7 +303,11 @@ const Chatbot = () => {
                     opacity: 1,
                     y: 0,
                 }}
+<<<<<<< HEAD
                 className="w-full pb-4 pt-6 bottom-0 mt-auto bg-transparent"
+=======
+                className="w-full bg-gradient-to-t from-white via-white to-transparent pb-4 pt-6 bottom-0 mt-auto"
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
             >
                 <div className="max-w-3xl mx-auto px-4">
                     <motion.div

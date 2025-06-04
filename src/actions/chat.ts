@@ -2,6 +2,7 @@
 
 import { streamText } from "ai";
 import { gemini } from "@/lib/gemini";
+<<<<<<< HEAD
 import { geminiEmbed } from "@/lib/gemini-embed";
 import { createStreamableValue } from "ai/rsc";
 import { Message } from "@/components/chat-box";
@@ -124,12 +125,23 @@ Assistant:`,
         ]
         : history;
 
+=======
+import { openai } from "@/lib/openai";
+import { createStreamableValue } from "ai/rsc";
+import { Message } from "@/components/chat-box";
+
+export const chat = async (history: Message[]) => {
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
     const stream = createStreamableValue();
 
     (async () => {
         const { textStream } = streamText({
             model: gemini("gemini-1.5-flash"),
+<<<<<<< HEAD
             messages: augmentedMessages,
+=======
+            messages: history,
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
         });
 
         for await (const text of textStream) {
@@ -139,5 +151,12 @@ Assistant:`,
         stream.done();
     })();
 
+<<<<<<< HEAD
     return { newMessage: stream.value };
+=======
+    return {
+        messages: history,
+        newMessage: stream.value,
+    };
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
 };

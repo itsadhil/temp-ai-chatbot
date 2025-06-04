@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Chatbot from "@/components/chat-box";
+<<<<<<< HEAD
 import { motion, AnimatePresence } from "framer-motion";
 
 const bubbleColors = [
@@ -47,6 +48,14 @@ const HomePage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
+=======
+
+const HomePage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -65,15 +74,23 @@ const HomePage = () => {
         throw new Error(data.message);
       }
 
+<<<<<<< HEAD
       setIsLoggedIn(true);
     } catch (error: any) {
       setError(error.message);
       setShake(true);
       setTimeout(() => setShake(false), 600);
+=======
+      alert("Login successful!");
+      setIsLoggedIn(true); // Set login status to true
+    } catch (error: any) {
+      setError(error.message);
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
     }
   };
 
   return (
+<<<<<<< HEAD
     <main className="relative w-full h-dvh bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 overflow-hidden">
       <AnimatedBubbles />
       <div className="max-w-4xl mx-auto h-full">
@@ -166,6 +183,45 @@ const HomePage = () => {
             </motion.div>
           )}
         </AnimatePresence>
+=======
+    <main className="w-full h-dvh bg-background">
+      <div className="max-w-4xl mx-auto h-full">
+        {isLoggedIn ? (
+          <Chatbot /> // Render Chatbot if logged in
+        ) : (
+          <div className="h-screen flex items-center justify-center">
+            <form onSubmit={handleLogin} className="space-y-4">
+              <h1 className="text-2xl font-bold">Login</h1>
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="border p-2 w-full"
+                required
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="border p-2 w-full"
+                required
+              />
+              {error && <p className="text-red-500">{error}</p>}
+              <button type="submit" className="bg-blue-500 text-white px-4 py-2">
+                Login
+              </button>
+              <p className="text-sm text-center">
+                Don't have an account?{" "}
+                <a href="/register" className="text-blue-500 hover:underline">
+                  Register
+                </a>
+              </p>
+            </form>
+          </div>
+        )}
+>>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
       </div>
     </main>
   );
