@@ -12,7 +12,6 @@
     "@ai-sdk/google": "^1.1.17",
     "@ai-sdk/openai": "^1.1.14",
     "@ai-sdk/react": "^1.1.18",
-<<<<<<< HEAD
     "@google/generative-ai": "^0.24.1",
     "@radix-ui/react-slot": "^1.1.2",
     "ai": "^4.1.46",
@@ -21,37 +20,23 @@
     "chromadb": "^2.4.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.16.0",
-=======
-    "@radix-ui/react-slot": "^1.1.2",
-    "ai": "^4.1.46",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "framer-motion": "^12.4.7",
->>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
     "lucide-react": "^0.476.0",
     "mongoose": "^8.15.1",
     "next": "15.1.7",
     "pdf-lib": "^1.17.1",
     "pdf-parse": "^1.1.1",
     "pdfjs-dist": "^5.2.133",
-<<<<<<< HEAD
     "pg": "^8.16.0",
     "pgvector": "^0.2.1",
-=======
->>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.0.0",
     "remark-gfm": "^4.0.1",
     "tailwind-merge": "^3.0.2",
-<<<<<<< HEAD
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.1.0",
     "weaviate-ts-client": "^2.2.0"
-=======
-    "tailwindcss-animate": "^1.0.7"
->>>>>>> dfc731f40074afd9557e8b54b590c5d4c87ddefe
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
