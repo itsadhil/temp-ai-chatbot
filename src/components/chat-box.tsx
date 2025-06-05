@@ -106,28 +106,35 @@ const Chatbot = () => {
                 contentToSend = input.trim();
             }
 
-            // Update the userTemp variable with the latest input
             setUserTemp(input.trim());
 
             // Add the user's question (if any) to the conversation
             const userMessage: Message = {
                 role: "user",
                 content: input.trim() || "Using the uploaded file...",
-                fileHeader: showFileHeader ? { name: uploadedFile?.name || "" } : undefined, // Add file header if applicable
+                fileHeader: showFileHeader ? { name: uploadedFile?.name || "" } : undefined,
             };
             setConversation((prev) => [...prev, userMessage]);
+            await fetch("/api/save-message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: userMessage.content, role: "user" }),
+            });
 
-            // Reset file header after the user's response
             setShowFileHeader(false);
 
-            // Add a placeholder message to indicate the AI is processing only if a file is uploaded
             if (pdfTemp) {
                 const assistantMessage: Message = {
                     role: "assistant",
                     content: "Processing the uploaded file...",
-                    fileHeader: { name: uploadedFile?.name || "" }, // Add file header for AI response
+                    fileHeader: { name: uploadedFile?.name || "" },
                 };
                 setConversation((prev) => [...prev, assistantMessage]);
+                await fetch("/api/save-message", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ content: assistantMessage.content, role: "assistant" }),
+                });
             }
 
             // Send the content to the AI backend
@@ -143,14 +150,12 @@ const Chatbot = () => {
                 textContent += delta;
                 setConversation((prev) => {
                     const newConv = [...prev];
-                    // Update the last assistant message with the AI's response
                     if (newConv[newConv.length - 1]?.role === "assistant") {
                         newConv[newConv.length - 1] = {
                             ...newConv[newConv.length - 1],
                             content: textContent,
                         };
                     } else {
-                        // If no placeholder assistant message exists, append a new one
                         newConv.push({
                             role: "assistant",
                             content: textContent,
@@ -161,10 +166,18 @@ const Chatbot = () => {
                 });
             }
 
-            // Clear the PDF temp variable after processing
+            // Save the final assistant message to the database
+            if (textContent) {
+                await fetch("/api/save-message", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ content: textContent, role: "assistant" }),
+                });
+            }
+
             if (pdfTemp) {
-                setPdfTemp(""); // Reset the PDF temp variable
-                setUploadedFile(null); // Clear the uploaded file state
+                setPdfTemp("");
+                setUploadedFile(null);
             }
         } catch (error) {
             console.error("Error sending content to AI:", error);
@@ -175,8 +188,13 @@ const Chatbot = () => {
                     content: "Sorry, there was an error processing the file. Please try again.",
                 },
             ]);
+            await fetch("/api/save-message", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: "Sorry, there was an error processing the file. Please try again.", role: "assistant" }),
+            });
         } finally {
-            setInput(""); // Clear the input field
+            setInput("");
             setIsLoading(false);
         }
     };
